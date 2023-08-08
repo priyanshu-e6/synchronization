@@ -13,6 +13,4 @@ public class operation implements Runnable {
             arr[0]+=1;
         }
     }
-
-
 }
