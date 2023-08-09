@@ -1,42 +1,33 @@
 package io.e6x;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class synchronize {
-    public static void main(String[] args) throws InterruptedException {
-        //making counter class and synchronizing it without the need to make static method
 
-        Counter counter = new Counter(0);
-        Thread thread1 = new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int i=0;i<1_000_000;i++) {
-                            counter.Increment();
-                        }
-                    }
-                }
-        );
-        Thread thread2 = new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int i=0;i<1_000_000;i++) {
-                            counter.Increment();
-                        }
-                    }
-                }
-        );
+    public static void main(String[] args) throws InterruptedException {
+
+        //printing numbers sequentially using three different threads
+        //thread 1 prints even numbers. th2 odd. th 3 multiples of 5
+
+        SynchronizeThread synchronizeThread = new SynchronizeThread();
+        Thread thread1 =new Thread( () -> synchronizeThread.thread1() );//prints odd numbers
+        Thread thread2 =new Thread( () -> synchronizeThread.thread2() );//prints even numbers
+        Thread thread3 =new Thread( () -> synchronizeThread.thread3() );//prints multiples of 5
+
         thread1.start();
         thread2.start();
+        thread3.start();
+
         thread1.join();
         thread2.join();
-        System.out.println(counter.returnValue());
+        thread3.join();
 
 
 
 
 
-     }
+
+
+    }
 }
